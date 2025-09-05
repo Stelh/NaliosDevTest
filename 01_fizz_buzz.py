@@ -1,41 +1,46 @@
-# 'b' est un booléen de controle qui permet de print une seul fois un nombre. Dans ma logique de code, for k, v peut print plusieurs fois un nombre si on ne met pas b = False. C'est la seul logique que j'ai trouvé pour pouvoir print un nombre une seul fois.
-
-# 'c' est un compteur pour len(d) pour vérifier si on a parcouru toutes les clés du dictionnaire et print une seule fois à la fin du parcours notre nombre si il doit être print. En corélation avec b.
-
-#Donc ma logique : 
-
-# Je parcours en premier la liste des nombre pour, puis je parcour le dictionnaire et test 1 par 1 chaque élément. 
-
-# Je test en premier si ça contient un "/", puis je vérifie le modulo. Si modulo, alors print et on break. Sinon, B = True, cela signifie qu'on a le droit de le print à la fin car il n'est pas modulo. 
-
-# Si ça contient pas de "/", alors ça fait le modulo comme plus haut, puis ça break. Sinon, comme plus haut, on passe B à true. Puis à la fin on vérifie si on est à la dernière occurence du for k, v avec len(d) et si B alors on print le last number
-
 def fizz_buzz(d):
+    # On parse le dictionnaire pour ne pas le parcourir à chaque fois.
+    parsed_dict = []
+    # print("parsed_init:",parsed_dict)
+    for k, v in d.items():
+        if '/' in k:
+            n1, n2 = map(int, k.split('/'))
+            #print(n1," ",n2)
+            parsed_dict.append(((n1, n2), v, True)) # True = Divisible par 2 nombres(3/5,2/6,etc...)
+            #print("parsed_dict:",parsed_dict)
+        else:
+            parsed_dict.append((int(k), v, False)) # False = Divisible par 1 nombre(3,5,etc...)
+            #print("else:",parsed_dict)
+    #print(parsed_dict)
+    #print("len:",len(parsed_dict))
+    
     for i in range(1, 101):
-        b = False
-        c = 0
-        for k, v in d.items():
+        b = False # Si true, alors on a pas trouvé de multiple, donc print le nombre à la fin de la boucle.
+        c = 0 # Compteur qui permet de savoir si on est à la fin de la boucle, et de print si b = True.
+        for j in parsed_dict:
             c += 1
-            if "/" in k:
-                n1, n2 = map(int, k.split('/'))
+            #print("j:",j)
+            if j[2]: # Si true, alors divisible par 2 nombres.
+                n1, n2 = j[0]
+                #print("N1:",n1, "N2:",n2)
                 if i % n1 == 0 and i % n2 == 0:
-                    print(str(v))
+                    print(str(j[1]))
                     break
                 if not b:
                     b = True
-            else:
-                n1 = int(k)
+            else: # Sinon, divisible par 1 nombre.
+                n1 = j[0]
+                #print("N1:",n1)
                 if i % n1 == 0:
-                    print(str(v))
+                    print(str(j[1]))
                     break
                 if not b:
                     b = True
-            if c == len(d) and b:
+            if c == len(parsed_dict) and b: # On est à la fin de la boucle, si on a pas trouvé de multiple,on print le nombre.
                 print(i)
-
 fizz_buzz({
     '3/5':'Fizz',
     '5':'Buzz',
     '7':'Buzzy',
-    '2/10':'FizzBuzz'
+    '13/26':'FizzBuzz'
 })
