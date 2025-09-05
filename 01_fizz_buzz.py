@@ -12,41 +12,26 @@
 
 def fizz_buzz(d):
     for i in range(1, 101):
-        #print("For:",i)
         b = False
         c = 0
         for k, v in d.items():
             c += 1
-            #print("leng:",len(d))
-            #print("c:",c)
-            #print("K:",k,"V:",v)
             if "/" in k:
                 n1, n2 = map(int, k.split('/'))
-                w = str(v)
-                #print("-If \"/\" N1:",n1," N2:",n2," W:",w)
                 if i % n1 == 0 and i % n2 == 0:
-                    b = False
-                    #print("-i % n1 and i % n2 == 0: ",w)
-                    print(w)
+                    print(str(v))
                     break
-                else:
-                    if not b:
-                        b = True
-                        #print("B1 is True")
+                if not b:
+                    b = True
             else:
                 n1 = int(k)
-                w = str(v)
                 if i % n1 == 0:
-                    b = False
-                    #print("_i % n1 == 0: ",w)
-                    print("w:",w)
+                    print(str(v))
                     break
-                else:
-                    if not b:
-                        b = True
-                        #print("B2 is True")
+                if not b:
+                    b = True
             if c == len(d) and b:
-                print("i:",i)
+                print(i)
 
 fizz_buzz({
     '3/5':'Fizz',
