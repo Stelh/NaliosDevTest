@@ -1,7 +1,6 @@
 def fizz_buzz(d):
-    # On parse le dictionnaire pour ne pas le parcourir à chaque fois.
-    parsed_dict = []
-    # print("parsed_init:",parsed_dict)
+    parsed_dict = [] # On parse le dictionnaire pour ne pas le parcourir à chaque fois.
+    #print("parsed_init:",parsed_dict)
     for k, v in d.items():
         if '/' in k:
             n1, n2 = map(int, k.split('/'))
@@ -25,17 +24,16 @@ def fizz_buzz(d):
                 #print("N1:",n1, "N2:",n2)
                 if i % n1 == 0 and i % n2 == 0:
                     print(str(j[1]))
-                    break
-                if not b:
-                    b = True
+                    break # Faut break sinon on peut print à la fin de la boucle un nombre multiple.
+                b = True
             else: # Sinon, divisible par 1 nombre.
                 n1 = j[0]
                 #print("N1:",n1)
                 if i % n1 == 0:
                     print(str(j[1]))
                     break
-                if not b:
-                    b = True
+                b = True
+            #print("c:",c, "len:",len(parsed_dict), "j:",j)
             if c == len(parsed_dict) and b: # On est à la fin de la boucle, si on a pas trouvé de multiple,on print le nombre.
                 print(i)
 fizz_buzz({
