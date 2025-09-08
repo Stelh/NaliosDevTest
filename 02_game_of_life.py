@@ -103,10 +103,10 @@ def game_of_life(m):
         check_neighbors_for_alive_cell(alive_positions,m_copy,next_step)
         check_neighbors_for_dead_cell(dead_positions,m_copy,next_step)
         print("iteration:",i+1)
+        _print_next_step(next_step)
         if check_border(next_step):
             infinite_grid(next_step, next_step)
         m_copy = [row[:] for row in next_step]
-    _print_next_step(next_step)
 
 game_of_life(
     [
