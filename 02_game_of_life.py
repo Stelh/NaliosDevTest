@@ -21,6 +21,21 @@ def print_alive_positions(alive_positions):
     print("_________________________")
 #####################################################
 
+def check_border(next_step):
+    for i, r in enumerate(next_step[0]):
+        if r == 1:
+            return True
+    for i, r in enumerate(next_step[-1]):
+        if r == 1:
+            return True
+    for i in range(len(next_step)):
+        if next_step[i][0] == 1:
+            return True
+    for i in range(len(next_step)):
+        if next_step[i][-1] == 1:
+            return True
+    return False
+
 def check_neighbors_for_dead_cell(dead_positions, m_copy, next_step):
     for (x,y) in dead_positions:
         c = 0
@@ -40,15 +55,7 @@ def check_neighbors_for_alive_cell(alive_positions, m_copy, next_step):
     for (x,y) in alive_positions:
         c = 0
         for nx in [-1,0,1]:
-            # if x == 0 and nx == -1 and i != 0:
-            #     continue
-            # if x == len(m_copy)-1 and nx == 1 and i != 0:
-            #     continue
             for ny in [-1,0,1]:
-                # if y == 0 and ny == -1 and i != 0:
-                #     continue
-                # if y == len(m_copy[0])-1 and ny == 1 and i != 0:
-                #     continue
                 if nx == 0 and ny == 0:
                     continue
                 if m_copy[x+nx][y+ny] == 1:
@@ -59,7 +66,6 @@ def check_neighbors_for_alive_cell(alive_positions, m_copy, next_step):
             next_step[x][y] = 1
         elif c >= 4:
             next_step[x][y] = 0
-
 
 def dead_cells(m_copy):
     dead_positions = []
@@ -78,8 +84,6 @@ def alive_cells(m_copy):
     return alive_positions
 
 def infinite_grid(m, m_copy):
-    # m_copy.insert(0, new_r)
-    # m_copy.append(new_r)
     m_copy.insert(0, [0] * len(m[0]))
     m_copy.append([0] * len(m[0]))
     for r in m_copy:
@@ -87,26 +91,10 @@ def infinite_grid(m, m_copy):
         r.append(0)
     return m_copy
 
-def check_border(next_step):
-    for i, r in enumerate(next_step[0]):
-        if r == 1:
-            return True
-    for i, r in enumerate(next_step[-1]):
-        if r == 1:
-            return True
-    for i in range(len(next_step)):
-        if next_step[i][0] == 1:
-            return True
-    for i in range(len(next_step)):
-        if next_step[i][-1] == 1:
-            return True
-    return False
-
 def game_of_life(m):
-    #new_r = [0] * len(m[0])
     _print_matrix(m)
     m_copy = [row[:] for row in m]
-    infinite_grid(m, m_copy) # Faut add check quand create infinite grid
+    infinite_grid(m, m_copy)
     _print_infinite_grid(m_copy)
     for i in range(5):
         next_step = [row[:] for row in m_copy]
@@ -115,10 +103,10 @@ def game_of_life(m):
         check_neighbors_for_alive_cell(alive_positions,m_copy,next_step)
         check_neighbors_for_dead_cell(dead_positions,m_copy,next_step)
         print("iteration:",i+1)
-        _print_next_step(next_step)
         if check_border(next_step):
             infinite_grid(next_step, next_step)
         m_copy = [row[:] for row in next_step]
+    _print_next_step(next_step)
 
 game_of_life(
     [
