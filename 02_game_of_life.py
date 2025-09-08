@@ -4,25 +4,6 @@
 # if cell = 0 and voisin = 3: cell = 1
 
 #####################################################
-def alive_cells(m):
-    alive_positions = []
-    for i, r in enumerate(m):
-        for j, c in enumerate(r):
-            if c == 1:
-                alive_positions.append((i,j))
-    return alive_positions
-
-def check_neighbors(alive_positions):
-    for (x,y) in alive_positions:
-        print("alive_cell_position:x",x,"y",y)
-
-        for nx in [-1,0,1]:
-            print("nx:",nx)
-
-            for ny in [-1,0,1]:
-                print("ny:",ny)
-
-#####################################################
 
 def i0_j0_c0_check_neightbors(m, i, j, m_copy):
     c = 0
@@ -56,39 +37,78 @@ def i0_j0_c1_check_neightbors(m, i, j, m_copy):
     for ii in m_copy:
         print(ii)
 
-def game_of_life(m):
-    m_copy = [row[:] for row in m]
-    new_r = [0] * len(m[0])
-    generation = 1
-    
-    for r in m:
-        print(r)
-    print("m_________________________")
+#####################################################
 
-    for i in range(generation+1):
+# def check_neighbors(alive_positions,m_copy):
+#     i = 2
+#     for (x,y) in alive_positions:   
+#         for nx in [-1,0,1]:
+#             if nx == 0:
+#                 continue
+#             m_copy[x+nx][y+nx] = i
+#             i += 1
+#     for i in m_copy:
+#         print(i)
+            
+#             # for ny in [-1,0,1]:
+#             #     print("ny:",ny)
+
+def check_neighbors(alive_positions,m_copy):
+    for (x,y) in alive_positions:   
+        for nx in [-1,0,1]:
+            for ny in [-1,0,1]:
+                if nx == 0 and ny == 0:
+                    continue
+                if m_copy[x+nx][y+ny] == 1:
+                    print("voisin found:",x+nx,y+ny)
+                    m_copy[x+nx][y+ny] = 2
+    for i in m_copy:
+        print(i)
+            
+            # for ny in [-1,0,1]:
+            #     print("ny:",ny)
+
+def alive_cells(m_copy,alive_positions):
+    for i, r in enumerate(m_copy):
+        for j, c in enumerate(r):
+            if c == 1:
+                alive_positions.append((i,j))
+    return alive_positions
+
+def infinite_grid(m, m_copy):
+    for i in range(1):
         # m_copy.insert(0, new_r)
         # m_copy.append(new_r)
         m_copy.insert(0, [0] * len(m[0]))
         m_copy.append([0] * len(m[0]))
-    
-    for r in m_copy:
-        print(r)
-    print("m_copy_________________________")
-    
-    for i in range(generation+1):
         for r in m_copy:
             r.insert(0,0)
             r.append(0)
+    return m_copy
+
+def game_of_life(m):
+    #new_r = [0] * len(m[0])
+    m_copy = [row[:] for row in m]
+    alive_positions = []
     
-    for r in m_copy:
-        print(r)
-    print("last_m_copy_________________________")
-    for r in m:
-        print(r)
-    print("last_m_________________________")
-    print("copy:",m_copy)
-    print("m:",m)
+    # for r in m:
+    #     print(r)
+    # print("Start:m_________________________")
     
+    infinite_grid(m, m_copy)
+    
+    # for r in m_copy:
+    #     print(r)
+    # print("m_copy_________________________")
+    
+    alive_cells(m_copy,alive_positions)
+    
+    print("alive_cells:",alive_positions)
+    
+    check_neighbors(alive_positions,m_copy)
+    
+
+
     # for i, r in enumerate(m):
     #     for j, c in enumerate(r):
     #         if i == 0 and j == 0 and c == 0:
@@ -100,7 +120,13 @@ def game_of_life(m):
 game_of_life(
     [
         [1,1,1],
-        [1,1,1],
-        [1,1,1]
+        [0,0,0],
+        [1,0,0],
+        [0,1,0],
+        [0,0,0],
+        [0,1,0],
+        [0,0,0],
+        [0,1,0],
+        [0,1,0]
     ]
 )
