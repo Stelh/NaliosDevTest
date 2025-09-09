@@ -19,9 +19,10 @@ def print_alive_positions(alive_positions):
         print(i)
     print("_________________________")
 #####################################################
+
 def end_it(m_copy):
-    for i, r in enumerate(m_copy):
-        for j, c in enumerate(r):
+    for _, r in enumerate(m_copy):
+        for _, c in enumerate(r):
             if c == 1:
                 return True
     return False
@@ -100,6 +101,7 @@ def game_of_life(m):
     _print_matrix(m)
     m_copy = [row[:] for row in m]
     infinite_grid(m, m_copy)
+    _print_infinite_grid(m_copy)
     for i in range(5):
         next_step = [row[:] for row in m_copy]
         alive_positions = alive_cells(m_copy)
@@ -112,6 +114,7 @@ def game_of_life(m):
         _print_next_step(next_step)
         m_copy = [row[:] for row in next_step]
         if not end_it(m_copy):
+            print("end")
             break
 
 game_of_life(
