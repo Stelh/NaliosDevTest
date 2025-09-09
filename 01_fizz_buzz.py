@@ -1,3 +1,45 @@
+# useless functions
+def get_n3(v):
+    return v[0]
+def get_n3_n4(v):
+    return v[0][0], v[0][1]
+def get_n1(v):
+    return v[0]
+def get_n1_n2(v):
+    return v[0][0], v[0][1]
+#############################################
+def sort_list(parsed_dict, parsed_dict_copy):
+    c = 0
+    for _ in range(len(parsed_dict)-1):
+        for i, v in enumerate(parsed_dict):
+            if v[2]:
+                n1, n2 = get_n1_n2(parsed_dict[i])
+                #print("ATM TRUE:", v,"|", n1, n2)
+            else:
+                n1 = get_n1(v)
+                #print("ATM FALSE:", v,"|", n1)
+            if i < len(parsed_dict)-1:
+                if parsed_dict[i+1][2]:
+                    n3, n4 = get_n3_n4(parsed_dict[i+1])
+                    #print("NEXT TRUE:",parsed_dict[i+1][0], n3, n4)
+                else:
+                    n3 = get_n3(parsed_dict[i+1])
+                    #print("NEXT FALSE:", parsed_dict[i+1],"|", n3)
+            else:
+                #print("End of ",_," sort")
+                #print("sorted_list:",parsed_dict)
+                break
+            ############# HEEEEEEEEEEEEEEEEERE
+            if n3 < n1:
+                parsed_dict[i], parsed_dict[i+1] = parsed_dict[i+1], parsed_dict[i]
+                print("sort:",parsed_dict)
+            else:
+                c += 1
+            if c == len(parsed_dict)-1: # YEAH BOY
+                print("sorted in ",_," iteration")
+                break
+    return parsed_dict
+
 def parse_dict(d):
     parsed_dict = []
     for k, v in d.items():
@@ -10,73 +52,32 @@ def parse_dict(d):
             parsed_dict.append((int(k), v, False))
     return parsed_dict
 
-def get_n1(v):
-    if v[2]:
-        print("TEST",v[2])
-        return v[0][0]
-def get_n2(v):
-    if v[2]:
-        return v[0][0]
-
-def sort_list(parsed_dict):
-    for c in range(len(parsed_dict)):
-        for i, v in enumerate(parsed_dict):
-            #n1 = get_n1(v)
-            #print("n1",n1)
-            #n2 = get_n2(v)
-            if v[2]:
-                n1, n2 = v[0]
-                print("ATM TRUE:", v,"|", n1, n2)
-            else:
-                n1 = v[0]
-                print("ATM FALSE:", v,"|", n1)
-            
-            if i+1 < len(parsed_dict):
-                if parsed_dict[i+1][2]:
-                    n3, n4 = parsed_dict[i+1][0]
-                    print("NEXT TRUE:",parsed_dict[i+1][0], n3, n4)
-                else:
-                    n3 = parsed_dict[i+1][0]
-                    print("NEXT FALSE:", parsed_dict[i+1],"|", n3)
-                # for cc in range(len(parsed_dict)):
-                #     if n3 > n1:
-                #         b = True
-                #     else:
-                #         b = False
-                #         continue
-            else:
-                print("END OF LIST")
-                print("sorted_list:",parsed_dict)
-                break
-            if n3 < n1:
-                print("swap")
-                parsed_dict[i], parsed_dict[i+1] = parsed_dict[i+1], parsed_dict[i]
-    return parsed_dict
-
 def fizz_buzz(d):
     print("dict:",d)
     print("_____________________________________")
     parsed_dict = parse_dict(d)
+    parsed_dict_copy = [row[:] for row in parsed_dict] # just for log
     print("parsed_dict:",parsed_dict)
-    sort_list(parsed_dict)
+    print("_____________________________________")
+    sort_list(parsed_dict, parsed_dict_copy)
     for i in range(1, 2):
-        b = False # Si true, alors on a pas trouvé de multiple, donc print le nombre à la fin de la boucle.
-        c = 0 # Compteur qui permet de savoir si on est à la fin de la boucle, et de print si b = True.
+        b = False
+        c = 0
         for j in parsed_dict:
             c += 1
-            if j[2]: # Si true, alors divisible par 2 nombres.
+            if j[2]:
                 n1, n2 = j[0]
                 if i % n1 == 0 and i % n2 == 0:
                     print(str(j[1]))
-                    break # Faut break sinon on peut print à la fin de la boucle un nombre multiple.
+                    break
                 b = True
-            else: # Sinon, divisible par 1 nombre.
+            else:
                 n1 = j[0]
                 if i % n1 == 0:
                     print(str(j[1]))
                     break
                 b = True
-            if c == len(parsed_dict) and b: # On est à la fin de la boucle, si on a pas trouvé de multiple on print le nombre.
+            if c == len(parsed_dict) and b:
                 print(i)
 
 fizz_buzz({
