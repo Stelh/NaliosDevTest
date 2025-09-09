@@ -9,7 +9,7 @@ def get_n1_n2(v):
     return v[0][0], v[0][1]
 #############################################
 def sort_list(parsed_dict, parsed_dict_copy):
-    c = 0
+    c = 0 # for count of swaps; if c == len(parsed_dict)-1: end of iterations and stop to try to sort
     for _ in range(len(parsed_dict)-1):
         for i, v in enumerate(parsed_dict):
             if v[2]:
@@ -34,8 +34,8 @@ def sort_list(parsed_dict, parsed_dict_copy):
                 parsed_dict[i], parsed_dict[i+1] = parsed_dict[i+1], parsed_dict[i]
                 print("sort:",parsed_dict)
             else:
-                c += 1
-            if c == len(parsed_dict)-1: # YEAH BOY
+                c += 1 # if swap not happened => count of swaps
+            if c == len(parsed_dict)-1: # YEAH BOY STOP SORTING
                 print("sorted in ",_," iteration")
                 break
     return parsed_dict
@@ -60,16 +60,16 @@ def fizz_buzz(d):
     print("parsed_dict:",parsed_dict)
     print("_____________________________________")
     sort_list(parsed_dict, parsed_dict_copy)
-    for i in range(1, 2):
-        b = False
-        c = 0
+    for i in range(1, 100):
+        b = False # true if multiple not found
+        c = 0 # for count of iterations. if c == len(parsed_dict) and b true: multiple not found print number
         for j in parsed_dict:
             c += 1
-            if j[2]:
+            if j[2]: # if true => divisible by 2 numbers
                 n1, n2 = j[0]
                 if i % n1 == 0 and i % n2 == 0:
                     print(str(j[1]))
-                    break
+                    break # break or that will print the number instead of hiding it
                 b = True
             else:
                 n1 = j[0]
@@ -77,7 +77,7 @@ def fizz_buzz(d):
                     print(str(j[1]))
                     break
                 b = True
-            if c == len(parsed_dict) and b:
+            if c == len(parsed_dict) and b: # end of iterations and if multiple not found print number
                 print(i)
 
 fizz_buzz({
